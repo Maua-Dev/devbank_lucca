@@ -1,4 +1,3 @@
-from ..enums.item_type_enum import ItemTypeEnum
 from ..errors.entity_errors import ParamNotValidated
 
 class Item: 
@@ -9,16 +8,36 @@ class Item:
 
     def __init__(self, name: str = None, agency: str = None, account: str = None, current_balance: float = None):
         self.name = name
+
         self.agency = agency
         if not self.validateAgency(agency):
-            raise ParamNotValidated("agency", "Must have 4 digits")
+            raise ParamNotValidated("agency", "invalid")
+        
         self.account = account
-        self.current_balance = current_balance
+        if not self.validateAccount(account):
+            raise ParamNotValidated("account", "invalid")
     
-
+        self.current_balance = current_balance
+        if not self.validate_current_balance(current_balance):
+            raise ParamNotValidated("current balance", "invalid")
+    
     @staticmethod
     def validateAgency(agency: str) -> bool:
-        if agency.__len__ != 4: 
+        if type(agency) != str:
+            return False
+        
+        return True
+    
+    @staticmethod
+    def validateAccount(account : str) -> bool:
+        if type(account) != str:
+                return False
+        
+        return True 
+    
+    @staticmethod
+    def validate_current_balance(current_balance) -> bool:
+        if type(current_balance) != float:
             return False
         
         return True
